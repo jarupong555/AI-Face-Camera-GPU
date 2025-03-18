@@ -29,10 +29,10 @@ async def add_cameras(request: Request, num_cameras: int = Form(...), ips: List[
     for i in range(num_cameras):
         rtsp_url = f"rtsp://{users[i]}:{passwords[i]}@{ips[i]}:554/cam/realmonitor?channel=1&subtype=0"
         camera_streams[ips[i]] = CameraStream(rtsp_url)
-        face_detectors[ips[i]] = FaceDetector()  # สร้าง FaceDetector สำหรับแต่ละกล้อง
+        face_detectors[ips[i]] = FaceDetector()
         await camera_streams[ips[i]].start()
 
-    return responses.RedirectResponse(f"/camera/{ips[0]}", status_code=302)  # redirect ไปยังหน้าสตรีม
+    return responses.RedirectResponse(f"/camera/{ips[0]}", status_code=302)
 
 @app.get("/camera/{camera_ip}", response_class=HTMLResponse)
 async def camera(request: Request, camera_ip: str):

@@ -27,7 +27,7 @@ class CameraStream:
         while self.running:
             ret, frame = self.cap.read()
             if ret:
-                frame = cv2.resize(frame, (640, 480))
+                frame = cv2.resize(frame, (320, 240))  # ลดความละเอียดลง
                 self.frame_queue.put(frame)
                 if not self.result_queue.empty():
                     self.frame = self.result_queue.get()
@@ -65,7 +65,7 @@ class CameraStream:
 
             for (top, right, bottom, left), name in zip(face_locations, face_names):
                 cv2.rectangle(frame, (left, top), (right, bottom), (0, 255, 0), 2)
-                cv2.putText(frame, name, (left + 6, bottom - 6), cv2.FONT_HERSHEY_SIMPLEX, 1.0, (0, 255, 0), 1)
+                cv2.putText(frame, name, (left + 6, bottom - 6), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 255, 0), 1)
 
             result_queue.put(frame)
 
