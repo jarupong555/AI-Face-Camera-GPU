@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Add Cameras</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Add Cameras</h1>
+        <form action="/add_cameras" method="post" id="cameraForm">
+            <div class="form-group">
+                <label for="num_cameras">Number of Cameras:</label>
+                <input type="number" name="num_cameras" id="num_cameras" class="form-control" required>
+            </div>
+            <div id="camera_fields"></div>
+            <button type="submit" class="btn btn-primary">Add Cameras</button>
+        </form>
+    </div>
+    <script>
+        const numCamerasInput = document.getElementById('num_cameras');
+        const cameraFieldsDiv = document.getElementById('camera_fields');
+
+        numCamerasInput.addEventListener('change', () => {
+            const numCameras = parseInt(numCamerasInput.value);
+            cameraFieldsDiv.innerHTML = '';
+            for (let i = 0; i < numCameras; i++) {
+                cameraFieldsDiv.innerHTML += `
+                    <div class="form-group">
+                        <label for="ip${i}">IP Address ${i + 1}:</label>
+                        <input type="text" name="ips" id="ip${i}" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="user${i}">Username ${i + 1}:</label>
+                        <input type="text" name="users" id="user${i}" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="password${i}">Password ${i + 1}:</label>
+                        <input type="password" name="passwords" id="password${i}" class="form-control" required>
+                    </div>
+                `;
+            }
+        });
+    </script>
+</body>
+</html>
