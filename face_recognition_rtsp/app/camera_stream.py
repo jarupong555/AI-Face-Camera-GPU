@@ -27,7 +27,7 @@ class CameraStream:
         while self.running:
             ret, frame = self.cap.read()
             if ret:
-                frame = cv2.resize(frame, (320, 240))  # ลดความละเอียดลง
+                frame = cv2.resize(frame, (640, 480))  # ลดความละเอียดลง
                 self.frame_queue.put(frame)
                 if not self.result_queue.empty():
                     self.frame = self.result_queue.get()

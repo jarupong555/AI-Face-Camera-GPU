@@ -6,3 +6,9 @@ Pillow
 python-multipart
 jinja2
 python-dotenv
+face_recognition
+dlib
+numpy
+torch
+torchvision
+tf-keras
