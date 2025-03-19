@@ -28,9 +28,13 @@ async def add_cameras(request: Request, num_cameras: int = Form(...), ips: List[
 
     for i in range(num_cameras):
         rtsp_url = f"rtsp://{users[i]}:{passwords[i]}@{ips[i]}:554/cam/realmonitor?channel=1&subtype=0"
-        camera_streams[ips[i]] = CameraStream(rtsp_url)
-        face_detectors[ips[i]] = FaceDetector()
-        await camera_streams[ips[i]].start()
+        try:
+            camera_streams[ips[i]] = CameraStream(rtsp_url)
+            face_detectors[ips[i]] = FaceDetector()
+            await camera_streams[ips[i]].start()
+        except Exception as e:
+            print(f"Error starting camera {ips[i]}: {e}")
+            raise HTTPException(status_code=500, detail=f"Error starting camera {ips[i]}: {e}")
 
     return responses.RedirectResponse(f"/camera/{ips[0]}", status_code=302)
 
@@ -48,5 +52,9 @@ async def stream(camera_ip: str):
     if camera_ip not in camera_streams:
         raise HTTPException(status_code=404, detail="Camera not found")
 
-    frame_generator = camera_streams[camera_ip].generate_frames()
-    return StreamingResponse(frame_generator, media_type="multipart/x-mixed-replace; boundary=frame")
+    try:
+        frame_generator = camera_streams[camera_ip].generate_frames()
+        return StreamingResponse(frame_generator, media_type="multipart/x-mixed-replace; boundary=frame")
+    except Exception as e:
+        print(f"Error streaming camera {camera_ip}: {e}")
+        raise HTTPException(status_code=500, detail=f"Error streaming camera {camera_ip}: {e}")
