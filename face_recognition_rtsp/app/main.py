@@ -57,4 +57,4 @@ async def stream(camera_ip: str):
         return StreamingResponse(frame_generator, media_type="multipart/x-mixed-replace; boundary=frame")
     except Exception as e:
         print(f"Error streaming camera {camera_ip}: {e}")
-        raise HTTPException(status_code=500, detail=f"Error streaming camera {camera_ip}: {e}")
+        return StreamingResponse(camera_streams[camera_ip].generate_frames(), media_type="multipart/x-mixed-replace; boundary=frame")
